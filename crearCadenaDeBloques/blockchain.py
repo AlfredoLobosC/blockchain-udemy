@@ -34,6 +34,12 @@ class Blockchain:
     
     def get_previous_block(self):
         return self.chain[-1]
+
+    def get_block(self, index):
+        return self.chain[index]
+
+    def get_chain(self):
+        return self
     
     # Nota: Crypto -> Difícil de encontrar y fácil de verificar
     
@@ -95,6 +101,16 @@ def mine_block():
 def get_chain():
     response = {'chain': blockchain.chain,
                 'length': len(blockchain.chain)}
+    return jsonify(response), 200
+
+@app.route('/is_valid', methods=['GET'])
+def is_valid():
+    my_chain = blockchain.chain
+    this_chain_is_valid = blockchain.is_chain_valid(my_chain)
+    if this_chain_is_valid == True:
+        response = {'message' : 'chain is valid',}
+    else:
+        response = {'message' : 'chain is not valid'}
     return jsonify(response), 200
 
 # ejecutar la app
